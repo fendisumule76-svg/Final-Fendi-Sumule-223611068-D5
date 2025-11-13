@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: API PHP Native Praktikum Pemrograman Jaringan
+  version: 1.0.0
+  description: >
+    RESTful API sederhana menggunakan PHP Native.
+    Mendukung fitur login JWT, CRUD user, upload aman, dan rate limiting.
+servers:
+  - url: http://localhost/api-php-native-Fendi.s/public/api/v1
+
+paths:
+  /health:
+    get:
+      summary: Mengecek status server API
+      responses:
+        '200':
+          description: Server aktif
+
+  /auth/login:
+    post:
+      summary: Login user dan mendapatkan token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: FendiSumule@exampel.com
+                password:
+                  type: string
+                  example: 123456
+      responses:
+        '200':
+          description: Login berhasil, token JWT dikembalikan
+        '401':
+          description: Email atau password salah
+
+  /users:
+    get:
+      summary: Menampilkan daftar user (perlu token)
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiJ9...
+      responses:
+        '200':
+          description: Daftar user ditampilkan
+        '401':
+          description: Token tidak valid / tidak ada
+
+    post:
+      summary: Menambahkan user baru (perlu token admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Maleo
+                email:
+                  type: string
+                  example: FendiSumule@exampel.com
+                password:
+                  type: string
+                  example: 123456
+                role:
+                  type: string
+                  enum: [user, admin]
+      responses:
+        '201':
+          description: User berhasil dibuat
+        '422':
+          description: Validasi gagal
+
+  /users/{id}:
+    get:
+      summary: Menampilkan detail user berdasarkan ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Data user ditemukan
+        '404':
+          description: User tidak ditemukan
+
+    put:
+      summary: Mengupdate data user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+      responses:
+        '200':
+          description: Data user berhasil diperbarui
+        '422':
+          description: Validasi gagal
+
+    delete:
+      summary: Menghapus user berdasarkan ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User berhasil dihapus
+        '400':
+          description: Gagal menghapus user
+
+  /upload:
+    post:
+      summary: Upload file (gambar/pdf, max 2MB)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: File berhasil diupload
+        '422':
+          description: File tidak valid (tipe/sz)
+        '415':
+          description: Format request salah (bukan multipart/form-data)

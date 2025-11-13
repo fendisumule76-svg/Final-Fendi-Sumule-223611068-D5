@@ -1,0 +1,72 @@
+{
+    "info": {
+      "name": "API PHP Native Fendi.s",
+      "_postman_id": "5b3f0e7e-0c3e-47f5-8e8a-00a1example",
+      "description": "Postman Collection untuk API PHP Native (Praktikum Pemrograman Jaringan)",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Health Check",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": { "raw": "http://localhost/api-php-native-Fendi.s/public/api/v1/health", "protocol": "http", "host": ["localhost"], "path": ["api-php-native", "public", "api", "v1", "health"] }
+        }
+      },
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": { "mode": "raw", "raw": "{\n    \"email\": \"FendiSumule@exampel.com\",\n    \"password\": \"123456\"\n}" },
+          "url": { "raw": "http://localhost/api-php-native-Fendi.s/public/api/v1/auth/login", "protocol": "http", "host": ["localhost"], "path": ["api-php-native-Fendi.s", "public", "api", "v1", "auth", "login"] }
+        }
+      },
+      {
+        "name": "Get Users",
+        "request": {
+          "method": "GET",
+          "header": [{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }],
+          "url": { "raw": "http://localhost/api-php-native-Fendi.s/public/api/v1/users", "protocol": "http", "host": ["localhost"], "path": ["api-php-native-Fendi.s", "public", "api", "v1", "users"] }
+        }
+      },
+      {
+        "name": "Create User",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": { "mode": "raw", "raw": "{\n    \"name\": \"Fendi\",\n    \"email\": \"FendiSumule@exampel.com\",\n    \"password\": \"123456\",\n    \"role\": \"user\"\n}" },
+          "url": { "raw": "http://localhost/api-php-native-Fendi.s/public/api/v1/users", "protocol": "http", "host": ["localhost"], "path": ["api-php-native-Fendi.s", "public", "api", "v1", "users"] }
+        }
+      },
+      {
+        "name": "Upload File",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+          "body": {
+            "mode": "formdata",
+            "formdata": [{ "key": "file", "type": "file", "src": "" }]
+          },
+          "url": { "raw": "http://localhost/api-php-native-Fendi.s/public/api/v1/upload", "protocol": "http", "host": ["localhost"], "path": ["api-php-native-Fendi.s", "public", "api", "v1", "upload"] }
+        }
+      }
+    ],
+    "event": [
+      {
+        "listen": "test",
+        "script": {
+          "exec": [
+            "if (pm.response.code === 200 && pm.response.json().data.token) {",
+            "    pm.environment.set('token', pm.response.json().data.token);",
+            "}"
+          ],
+          "type": "text/javascript"
+        }
+      }
+    ]
+  }
