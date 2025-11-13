@@ -189,7 +189,7 @@ Nama	Keterangan
 Nama:	Fendi sumule
 NIM:	223611068
 Kelas:	D5
-Dosen Pengampu:	Samuel Yakobus Padang 
+Dosen Pengampu:	ir.Semuel Yacobus Padang, S.Kom., M.Kom 
 
 📚 Lisensi
 Proyek ini digunakan untuk keperluan pembelajaran Pemrograman Jaringan.
